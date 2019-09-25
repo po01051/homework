@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Gaegu&display=swap" rel="stylesheet">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- JS -->   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!--자바 시작점-->
+  <script>
+
+    $(document).ready(function(){
+      $('#orders-box').empty();
+      listing()
+            });
+   
+
+   
+    function hey(){
+      let item = '나물팟'
+      let name = $('#name').val();
+      let count = $('#count').val();
+      let addr = $('#addr').val();
+      let phone = $('#phone').val();
+      
+
+      $.ajax({
+      type: "POST",
+      url: "http://spartacodingclub.shop/order",
+      data: { name_give:name, count_give:count,address_give:address,phone_give:phone,item_give:item },
+      success: function(response){
+        alert('주문 감사합니다 고갱님:)')
+        location.reload();
+      }
+            })
+      }
+
+      function listing(){
+        $.ajax({
+          type: "GET",
+          url: "http://spartacodingclub.shop/order?item_give=나물팟",
+          data: {},
+          success: function(response){
+          if (response['result'] == 'success') {
+          let orders = response['orders']
+          for (let i= 0 ; i < orders.length; i++){
+           let aa = orders[i];
+           make_table(aa['name'],aa['count'],aa['address'],aa['phone'],aa['item'])
+              }
+            }
+            }
+          })
+       }
+
+
+    function make_table(name,count,address,phone,item){
+          let temp_html = '<tbody id="orders-box">\
+          <tr><td>'+item+'</td>\
+          <td>'+name+'</td>\
+          <td>'+count+'</td>\
+          <td>'+address+'</td>\
+          <td>'+phone+'</td>\
+          </tbody>';
+          $('#orders-box').append(temp_html);
+        }
+
+        
+
+  </script>
+
+    <style type="text/css">
+      * {
+        font-family: 'Gaegu', cursive;
+            }
+      .airpod {
+            text-align: center;
+            margin: 30px
+            }
+      .all {
+            margin-left: 30px;
+            }
+      .price {
+            margin-left: 10px;
+            }
+      .content {
+            margin-top: 15px;
+            margin-bottom: 30px
+            }
+      .form-group {
+        border-radius: 10px;
+            }
+      .button {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 50px;
+            }
+    </style>
+
+    <title>★☆콩나물 팟☆★</title>
+  </head>
+
+  <body>
+      <div class="airpod">
+        <img src="https://image.fmkorea.com/files/attach/new/20190510/486616/1796233935/1803261732/c1233c20828d94e70392c91876b821c2.jpg" width=900px height=300px>
+      </div>
+  <div class="all"> 
+      <div class="title">
+        <h1 class="sang_name"
+          style="font-size: 30px; font-weight:700; display: inline-block"> 상품제목
+        </h1>
+        <h2 class="price"
+          style="font-size: 15px; font-weight:300; display: inline-block"> 가격: 199,999원 / 개당
+        </h2>
+      </div>
+      <div class="content">
+        <p> 이 상품은 유기농 콩나물을 이용해 풍부한 사운드를 즐기는 데에 도움을 줄 수도 있는 제품입니다. 해당 기능은 블루투스를 지원하지는 않습니다. 조금 더 많은 구매자들이 이용할 수 있게 인당 3개 이상은 구매가 불가합니다.가격은 A사 A팟 제품보다 싸게 모시고 있습니다. 13시 이전 입금 당일 출고 가능합니다. </p>
+      </div>
+      <h3 style="font-size: 30px; font-weight:700; margin-bottom: 25px"> 주문하기 </h3>
+
+      <form>
+        <div class="form-group">
+          <h3 style="font-size: 1rem; display: inline-block;"> 주문자 이름: </h3>
+          <input type="email" class="form-control" id="name" style="width:300px; display: inline-block; margin-left: 52px">
+        </div>
+        <div class="form-group">
+          <h3 style="font-size: 1rem; display: inline-block;"> 상품 수량: </h3>
+          <select class="form-control" id="count" style="width:300px;display: inline-block; margin-left: 65px">
+              <option> </option>
+              <option>2개</option>
+              <option>3개</option>
+              <option>4개</option>
+              <option>그 이상</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <h3 style="font-size: 1rem; display: inline-block;"> 주소: </h3>
+          <input type="email" class="form-control" id="address" style="width:300px; display: inline-block; margin-left: 98px">
+        </div>
+        <div class="form-group">
+          <h3 style="font-size: 1rem; display: inline-block;"> 전화 번호: </h3>
+          <input type="email" class="form-control" id="phone" style="width:300px; display: inline-block; margin-left: 65px">
+        </div>
+      <div class="button">
+        <button onclick="hey()" type="button" class="btn btn-secondary btn-lg" style="width:300px">주문하기</button>
+      </div>
+
+
+  <table class="table">
+       <thead>
+          <tr>
+            <th scope="col">상품명</th>
+            <th scope="col">이름</th>
+            <th scope="col">수량</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+          </tr>
+        </thead>
+        <tbody id="orders-box"><tr><td>살려</td><td>주세요</td><td>겁나</td><td>어렵습니다</td><td>ㅠㅠ</td>
+  </table>
+  </body>
+</html>
